@@ -1,4 +1,4 @@
-## SEEL4213
+## Brave Lynx
 ### PROBLEM STATEMENT
 - This causes the loss of life due to the delay in the arrival of ambulance to the accident spot or from the accident spot to the hospital. So, the system is use to monitor the data from sensor to make a emergency alert in the system.
 
@@ -16,3 +16,4 @@ Grafana
 - Accerometer sensor use to measure the acceleration of the vehicle
 
 
+![Sensor   Device](https://user-images.githubusercontent.com/118268884/207471163-ebc28b07-bd37-409c-be45-090c10b01415.png)
