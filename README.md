@@ -1,4 +1,5 @@
 ## Brave Lynx
+## Crush Detection Monitoring System
 ### PROBLEM STATEMENT
 - This causes the loss of life due to the delay in the arrival of ambulance to the accident spot or from the accident spot to the hospital. So, the system is use to monitor the data from sensor to make a emergency alert in the system.
 
