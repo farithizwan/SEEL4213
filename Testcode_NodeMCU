@@ -1,6 +1,3 @@
-///////////////Created by Gledis Qose//////////////////
-
-
 #include <WiFi.h>
 #include "DHT.h"
 #define DHTPIN 22
