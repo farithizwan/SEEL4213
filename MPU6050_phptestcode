@@ -100,7 +100,7 @@ void loop() {
   mpu.getEvent(&a, &g, &temp);
  
  acc_x = a.acceleration.x;
- temperature = temp.temperature;
+ temperaturedata = temp.temperature;
  Sending_To_phpmyadmindatabase(); 
  delay(30000); // interval
 }
@@ -110,10 +110,10 @@ void loop() {
    if (client.connect(server, 80)) {
     Serial.println("connected");
     // Make a HTTP request:
-    Serial.print("GET /testcode/mpu6050.php?humidity=");
-    client.print("GET /testcode/dht.php?humidity=");     //YOUR URL
-    Serial.println(humidityData);
-    client.print(humidityData);
+    Serial.print("GET /mpu6050.php?acc_x=");
+    client.print("GET /mpu6050.php?acc_x=");     //YOUR URL
+    Serial.println(acc_x);
+    client.print(acc_x);
     client.print("&temperature=");
     Serial.println("&temperature=");
     client.print(temperatureData);
@@ -121,7 +121,7 @@ void loop() {
     client.print(" ");      //SPACE BEFORE HTTP/1.1
     client.print("HTTP/1.1");
     client.println();
-    client.println("Host: <Your Local IP>");
+    client.println("Host: 10.208.96.73");
     client.println("Connection: close");
     client.println();
   } else {
