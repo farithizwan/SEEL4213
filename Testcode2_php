@@ -1,9 +1,9 @@
 <?php
 class mpu6050{
  public $link='';
- function __construct($x_axis, $temperature){
+ function __construct($acc_x, $temperature){
   $this->connect();
-  $this->storeInDB($x_axis, $temperature);
+  $this->storeInDB($acc_x, $temperature);
  }
  
  function connect(){
@@ -12,13 +12,13 @@ class mpu6050{
  }
  
  function storeInDB($x_axis, $temperature){
-  $query = "insert into <Your table name> set x-axis='".$x_axis."', temperature='".$temperature."'";
+  $query = "insert into <mpu6050> set acc_x='".$acc_x."', temperature='".$temperature."'";
   $result = mysqli_query($this->link,$query) or die('Errant query:  '.$query);
  }
  
 }
-if($_GET['x-axis'] != '' and  $_GET['temperature'] != ''){
- $mpu6050=new dht11($_GET['x_axis'],$_GET['temperature']);
+if($_GET['acc_x'] != '' and  $_GET['temperature'] != ''){
+ $mpu6050=new dht11($_GET['acc_x'],$_GET['temperature']);
 }
 
 
