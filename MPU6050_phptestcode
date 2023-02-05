@@ -1,11 +1,21 @@
 #include <Wire.h>
 #include <WiFi.h>
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
 
 #define MPU_6050_Address 0x68  // MPU-6050 I2C address
+
+Adafruit_MPU6050 mpu;
+
+char server[] = "192.168.162.173";
+IPAddress ip(192,168,162,173); 
 
 const char* ssid = "realme X2 Pro";
 const char* password = "Takdedatawey";
 WiFiClient client;
+
+float acc_x;
+float temperatureData;
 
 void setup() {
   Wire.begin();
@@ -20,7 +30,7 @@ void setup() {
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi");
-  
+
   Serial.println("Adafruit MPU6050 test!");
 
   // Try to initialize!
@@ -90,7 +100,6 @@ void setup() {
       Serial.println("5 Hz");
       break;
   }
-
   Serial.println("");
   delay(100);
 }
@@ -98,16 +107,16 @@ void setup() {
 void loop() {
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
- 
- acc_x = a.acceleration.x;
- temperaturedata = temp.temperature;
- Sending_To_phpmyadmindatabase(); 
- delay(30000); // interval
+
+  acc_x = a.acceleration.x;
+  temperatureData = temp.temperature;
+  Sending_To_phpmyadmindatabase();
+  delay(5000); // interval
 }
 
-  void Sending_To_phpmyadmindatabase()   //CONNECTING WITH MYSQL
- {
-   if (client.connect(server, 80)) {
+void Sending_To_phpmyadmindatabase()   //CONNECTING WITH MYSQL
+{
+  if (client.connect(server, 80)) {
     Serial.println("connected");
     // Make a HTTP request:
     Serial.print("GET /mpu6050.php?acc_x=");
@@ -121,11 +130,11 @@ void loop() {
     client.print(" ");      //SPACE BEFORE HTTP/1.1
     client.print("HTTP/1.1");
     client.println();
-    client.println("Host: 10.208.96.73");
+    client.println("Host: 192.168.162.173");
     client.println("Connection: close");
     client.println();
   } else {
     // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
- }
+}
