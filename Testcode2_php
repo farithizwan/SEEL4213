@@ -1,24 +1,24 @@
 <?php
-class dht11{
+class mpu6050{
  public $link='';
- function __construct($temperature, $humidity){
+ function __construct($x_axis, $temperature){
   $this->connect();
-  $this->storeInDB($temperature, $humidity);
+  $this->storeInDB($x_axis, $temperature);
  }
  
  function connect(){
   $this->link = mysqli_connect('localhost','root','') or die('Cannot connect to the DB');
-  mysqli_select_db($this->link,'<Your Database Name>') or die('Cannot select the DB');
+  mysqli_select_db($this->link,'<mpu6050>') or die('Cannot select the DB');
  }
  
- function storeInDB($temperature, $humidity){
-  $query = "insert into <Your table name> set humidity='".$humidity."', temperature='".$temperature."'";
+ function storeInDB($x_axis, $temperature){
+  $query = "insert into <Your table name> set x-axis='".$x_axis."', temperature='".$temperature."'";
   $result = mysqli_query($this->link,$query) or die('Errant query:  '.$query);
  }
  
 }
-if($_GET['temperature'] != '' and  $_GET['humidity'] != ''){
- $dht11=new dht11($_GET['temperature'],$_GET['humidity']);
+if($_GET['x-axis'] != '' and  $_GET['temperature'] != ''){
+ $mpu6050=new dht11($_GET['x_axis'],$_GET['temperature']);
 }
 
 
