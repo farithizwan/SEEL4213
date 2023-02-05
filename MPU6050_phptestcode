@@ -1,0 +1,49 @@
+#include <Wire.h>
+#include <WiFi.h>
+
+#define MPU_6050_Address 0x68  // MPU-6050 I2C address
+
+const char* ssid = "realme X2 Pro";
+const char* password = "Takdedatawey";
+WiFiClient client;
+
+void setup() {
+  Wire.begin();
+  Wire.beginTransmission(MPU_6050_Address);
+  Wire.write(0x6B);  // PWR_MGMT_1 register
+  Wire.write(0);     // set to zero (wakes up the MPU-6050)
+  Wire.endTransmission(true);
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+  Serial.println("Connected to WiFi");
+}
+
+void loop() {
+  Wire.beginTransmission(MPU_6050_Address);
+  Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU_6050_Address, 6, true);  // request a total of 6 registers
+
+  int16_t acc_x = Wire.read() << 8 | Wire.read();  // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)
+  int16_t temperature = Wire.read() << 8 | Wire.read();  // 0x41 (TEMP_OUT_H) & 0x42 (TEMP_OUT_L)
+
+  if (client.connect("192.168.1.101", 80)) {
+    String postStr = "acc_x=";
+    postStr += String(acc_x / 16384.0);
+    postStr += "&temperature=";
+    postStr += String((temperature / 340.0) + 36.53);
+    client.println("POST /database.php HTTP/1.1");
+    client.println("Host: 192.168.1.101");
+    client.println("Content-Type: application/x-www-form-urlencoded");
+    client.println("Content-Length: " + String(postStr.length()));
+    client.println();
+    client.println(postStr);
+  } else {
+    Serial.println("connection failed");
+  }
+  delay(1000);
+}
